@@ -18,7 +18,7 @@ export function taskRow(functionCall, className, task) {
         cell(td, 'pa2 tl w-80', task.service),
         cell(td, 'pa2 tr w-15', '$' + task.price),
         cell(td, 'pa2 w-5', i({ 
-            className: 'fas fa-info pa2' 
+            className: 'fas fa-info-circle pa2 f6' 
             })
         )
     ])
