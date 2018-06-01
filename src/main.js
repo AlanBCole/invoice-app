@@ -1,10 +1,10 @@
-import { initModel } from './Models';
+import { initModel } from './Model';
 import createElement from 'virtual-dom/create-element';
-import invoiceTable from './views/invoice-table.view';
+import invoice from './views/invoice.view';
 
 const app = document.getElementById('app');
-let invoice = invoiceTable('a function to go here', initModel.tasks)
-const view = createElement(invoice);
+let invoiceView = invoice('a function to go here', initModel)
+const view = createElement(invoiceView);
 app.appendChild(view);
 
 console.log(view);
