@@ -13,6 +13,7 @@ const {
     p,
     h2,
     h4,
+    button,
 } = hh(h);
 
 function invoiceTitle(model) {
@@ -71,12 +72,21 @@ function invoiceBody(functionCall, className, tasks) {
     ])
 }
 
+function fabButton(functionCall, icon) {
+    return button({ 
+        className: 'mdc-fab material-icons app-fab--absolute',
+        onclick: functionCall
+    }, i({ className: 'mdc-fab__icon material-icons' }, icon));
+}
+
 function invoice(functionCall, model) {
-    console.log(functionCall);
-    console.log(model);
+    // console.log(functionCall);
+    // console.log(model);
     return div([
-        invoiceTitle(model),
-        invoiceBody(functionCall, 'w-100', model.tasks),
-    ])
+            invoiceTitle(model),
+            invoiceBody(functionCall, 'w-100', model.tasks),
+            fabButton(() => console.log('fab clicked'), 'add')
+        ])
+        
 }
 export default invoice;
