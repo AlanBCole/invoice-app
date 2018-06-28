@@ -1,7 +1,14 @@
 @import "@material/fab/mdc-fab";
 
-.app-fab--absolute {
+.mdc-fab {
+    background-color: red;
+}
+
+.total-row {
     position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-  }
+    width: 100%;
+    bottom: 0;
+    right: 0;
+    background-color: lightyellow;
+    padding: 1rem;
+}

@@ -20,8 +20,8 @@ function invoiceTitle(model) {
     return div([
         h4('Invoice'),
         h2({ className: 'mt0 mb0' }, model.client.name),
-        p({ className: 'mt0' }, model.invoiceDate),
-    ])
+        p({ className: 'mt0' }, Date(model.invoiceDate)),
+    ]);
 }
 
 function cell(tagName, className, valueToDisplay) {
@@ -52,41 +52,42 @@ function taskRow(functionCall, className, task) {
     ])
 }
 
-function totalRow(tasks) {
-    const total = '$' + tasks.map((task) => task.price).reduce((acc, price) => acc + price);
-
-    return tr({ className: 'b bt' }, [
-        cell(td, 'pa2 tr w-80', 'Total:'),
-        cell(td, 'pa2 tr w-15', total),
-        cell(td, 'w-15', ''),
-      ]);
-}
-
 function invoiceBody(functionCall, className, tasks) {
     const taskRows = tasks.map((task) => taskRow(functionCall, '', task));
-    const rowsWithTotal = [ ...taskRows, totalRow(tasks)]
+    // const rowsWithTotal = [ ...taskRows, totalRow(tasks)];
 
     return table({ className }, [
         tableHeader,
-        tbody({}, rowsWithTotal),
-    ])
+        tbody({}, taskRows),
+    ]);
 }
 
 function fabButton(functionCall, icon) {
     return button({ 
-        className: 'mdc-fab material-icons app-fab--absolute',
+        className: 'mdc-fab material-icons',
         onclick: functionCall
     }, i({ className: 'mdc-fab__icon material-icons' }, icon));
 }
 
+function totalRow(addTask, tasks, addIcon) {
+    const total = '$' + tasks.map((task) => task.price).reduce((acc, price) => acc + price);
+
+    return tr({ className: 'b total-row' }, [
+        cell(td, 'pa2 tl w-15', 'Total:'),
+        cell(td, 'pa2 tl w-75', total),
+        cell(td, 'w-20', fabButton(addTask, addIcon)),
+      ]);
+}
+
 function invoice(functionCall, model) {
+    const { tasks } = model;
     // console.log(functionCall);
     // console.log(model);
-    return div([
+    return div({ className: 'invoice' }, [
             invoiceTitle(model),
-            invoiceBody(functionCall, 'w-100', model.tasks),
-            fabButton(() => console.log('fab clicked'), 'add')
-        ])
+            invoiceBody(functionCall, 'w-100', tasks),
+            totalRow(() => console.log('fab clicked'), tasks, 'add')
+        ]);
         
 }
 export default invoice;
