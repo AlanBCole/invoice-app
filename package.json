@@ -4,7 +4,7 @@
   "description": "An app for creating invoices on mobile devices onsite",
   "main": "./dist/app.js",
   "scripts": {
-    "start": "webpack-dev-server --host $IP --port $PORT --disableHostCheck",
+    "start": "webpack-dev-server",
     "build": "webpack",
     "build:prod": "webpack -p",
     "watch": "webpack --watch"

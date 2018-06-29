@@ -3,8 +3,8 @@ export const client = {
 }
 
 export const initModel = {
-    showCreateInvoiceForm: false,
-    showCreateTaskForm: false,
+    whichView: 'INVOICE_SINGLE',
+    showForm: false,
     showNavDrawer: false,
     clients: [],
     pastInvoices: [],
@@ -17,16 +17,15 @@ export const initModel = {
         zipCode: "80304",
         notes: 'additional information',
     },
-    invoiceDate: Date.now().toString(),
-    services: [],
+    invoiceDate: Date.now(),
     tasks: [
         {
-            service: "Replace String",
+            task: "Replace String",
             price: 5,
             description: "replace broken or damaged string",
         },
         {
-            service: "Concert Tuning 1x8",
+            task: "Concert Tuning 1x8",
             price: 100,
             description: "tune to requested temperament",
         }

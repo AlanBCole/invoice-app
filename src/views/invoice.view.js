@@ -1,5 +1,6 @@
 import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
+import { addInvoiceTaskForm } from './forms.view';
 
 const { 
     table,
@@ -37,23 +38,25 @@ const tableHeader = thead([
     ])
 ])
 
-function taskRow(functionCall, className, task) {
+function taskRow(dispatch, className, task) {
     return tr({ className }, [
-        cell(td, 'pa2 tl w-79 f5', task.service),
+        cell(td, 'pa2 tl w-79 f5', task.task),
         cell(td, 'pa2 tr w-15 f5', '$' + task.price),
         cell(td, 'pa2 w-3', i({ 
-            className: 'fas fa-info-circle f6' 
+            className: 'fas fa-info-circle f6',
+            onclick: () => dispatch('edit clicked')
             })
         ),
         cell(td, 'pa2 w-3', i({ 
-            className: 'fas fa-trash f6' 
+            className: 'fas fa-trash f6',
+            onclick: () => dispatch('trash clicked')
             })
         )
     ])
 }
 
-function invoiceBody(functionCall, className, tasks) {
-    const taskRows = tasks.map((task) => taskRow(functionCall, '', task));
+function invoiceBody(dispatch, className, tasks) {
+    const taskRows = tasks.map((task) => taskRow(dispatch, '', task));
     // const rowsWithTotal = [ ...taskRows, totalRow(tasks)];
 
     return table({ className }, [
@@ -62,32 +65,39 @@ function invoiceBody(functionCall, className, tasks) {
     ]);
 }
 
-function fabButton(functionCall, icon) {
+function fabButton(dispatch, icon) {
     return button({ 
         className: 'mdc-fab material-icons',
-        onclick: functionCall
+        onclick: () => dispatch(true),
     }, i({ className: 'mdc-fab__icon material-icons' }, icon));
 }
 
-function totalRow(addTask, tasks, addIcon) {
+function totalRow(dispatch, tasks, addIcon) {
     const total = '$' + tasks.map((task) => task.price).reduce((acc, price) => acc + price);
 
     return tr({ className: 'b total-row' }, [
         cell(td, 'pa2 tl w-15', 'Total:'),
         cell(td, 'pa2 tl w-75', total),
-        cell(td, 'w-20', fabButton(addTask, addIcon)),
+        cell(td, 'w-20', fabButton(dispatch, addIcon)),
       ]);
 }
 
-function invoice(functionCall, model) {
-    const { tasks } = model;
-    // console.log(functionCall);
-    // console.log(model);
-    return div({ className: 'invoice' }, [
+function invoice(dispatch, model) {
+    const { tasks, showForm, whichView } = model;
+
+    if (!showForm && whichView === 'INVOICE_SINGLE') {
+        return div({ className: 'invoice' }, [
             invoiceTitle(model),
-            invoiceBody(functionCall, 'w-100', tasks),
-            totalRow(() => console.log('fab clicked'), tasks, 'add')
-        ]);
+            invoiceBody(dispatch, 'w-100', tasks),
+            totalRow(dispatch, tasks, 'add')
+        ]);     
+    } else if (showForm && whichView === 'INVOICE_SINGLE') {
+        return div({ className: 'add-task' }, [
+            invoiceTitle(model),
+            addInvoiceTaskForm(dispatch, model)
+        ]
+        )
+    }
         
 }
 export default invoice;
