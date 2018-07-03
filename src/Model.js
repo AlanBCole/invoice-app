@@ -6,6 +6,10 @@ export const initModel = {
     whichView: 'INVOICE_SINGLE',
     showForm: false,
     showNavDrawer: false,
+    nextTaskId: 0,
+    taskPrice: '',
+    taskTitle: '',
+    tasks: [],
     clients: [],
     pastInvoices: [],
     client: {
@@ -17,17 +21,5 @@ export const initModel = {
         zipCode: "80304",
         notes: 'additional information',
     },
-    invoiceDate: Date.now(),
-    tasks: [
-        {
-            task: "Replace String",
-            price: 5,
-            description: "replace broken or damaged string",
-        },
-        {
-            task: "Concert Tuning 1x8",
-            price: 100,
-            description: "tune to requested temperament",
-        }
-    ],
+    invoiceDate: 1530320392740,
 }

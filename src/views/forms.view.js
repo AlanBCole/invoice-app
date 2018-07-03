@@ -1,5 +1,7 @@
 import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
+import { toggleForm, textInputMsg, saveTaskMsg, MSGS } from '../update';
+
 
 const {
     div,
@@ -29,7 +31,7 @@ function buttonSet(dispatch) {
             {
             className: 'f3 pv2 ph3 bg-blue white bn mr2 dim',
             type: 'submit',
-            onclick: () => dispatch(false),
+            // onclick: () => dispatch(saveTaskMsg(false)),
             },
             'Save',
         ),
@@ -37,7 +39,7 @@ function buttonSet(dispatch) {
             {
             className: 'f3 pv2 ph3 bg-light-gray bn dim',
             type: 'button',
-            onclick: () => dispatch(false),
+            onclick: () => dispatch(toggleForm(false)),
             },
             'Cancel',
         ),
@@ -45,23 +47,24 @@ function buttonSet(dispatch) {
 }
 
 export function addInvoiceTaskForm(dispatch, model) {
+    const { taskTitle, taskPrice } = model;
     return form(
         {
             onsubmit: e => {
                 e.preventDefault();
-                dispatch(false);
+                dispatch(saveTaskMsg);
             }
         },
         [
             formFieldSet(
                 'new task', 
-                '...', 
-                e => dispatch(taskInputMsg(e.target.value))
+                taskTitle, 
+                e => dispatch(textInputMsg(e.target.value, MSGS.TASK_TITLE_INPUT))
             ),
             formFieldSet(
                 'price', 
-                '$', 
-                e => dispatch(priceInputMsg(e.target.value))
+                taskPrice, 
+                e => dispatch(textInputMsg(e.target.value, MSGS.TASK_PRICE_INPUT))
             ),
             buttonSet(dispatch),
         ]

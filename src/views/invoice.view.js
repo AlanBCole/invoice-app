@@ -1,6 +1,8 @@
 import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
 import { addInvoiceTaskForm } from './forms.view';
+import { toggleForm } from '../update';
+
 
 const { 
     table,
@@ -40,8 +42,8 @@ const tableHeader = thead([
 
 function taskRow(dispatch, className, task) {
     return tr({ className }, [
-        cell(td, 'pa2 tl w-79 f5', task.task),
-        cell(td, 'pa2 tr w-15 f5', '$' + task.price),
+        cell(td, 'pa2 tl w-79 f5', task.taskTitle),
+        cell(td, 'pa2 tr w-15 f5', '$' + task.taskPrice),
         cell(td, 'pa2 w-3', i({ 
             className: 'fas fa-info-circle f6',
             onclick: () => dispatch('edit clicked')
@@ -56,29 +58,40 @@ function taskRow(dispatch, className, task) {
 }
 
 function invoiceBody(dispatch, className, tasks) {
-    const taskRows = tasks.map((task) => taskRow(dispatch, '', task));
-    // const rowsWithTotal = [ ...taskRows, totalRow(tasks)];
+    console.log('# of tasks', tasks.length)
+    if (tasks.length === 0) {
+        return div({ className: 'mv-2 black-50' }, 'no tasks in this invoice')
+    } else {
+        const taskRows = tasks.map((task) => taskRow(dispatch, '', task));
+        // const rowsWithTotal = [ ...taskRows, totalRow(tasks)];
 
-    return table({ className }, [
-        tableHeader,
-        tbody({}, taskRows),
-    ]);
+        return table({ className }, [
+            tableHeader,
+            tbody({}, taskRows),
+        ]);
+    }
 }
 
 function fabButton(dispatch, icon) {
     return button({ 
         className: 'mdc-fab material-icons',
-        onclick: () => dispatch(true),
+        onclick: () => dispatch(toggleForm(true)),
     }, i({ className: 'mdc-fab__icon material-icons' }, icon));
 }
 
 function totalRow(dispatch, tasks, addIcon) {
-    const total = '$' + tasks.map((task) => task.price).reduce((acc, price) => acc + price);
+    let total = '';
+    if (tasks.length === 0) {
+        total = '$0.00'
+    } else {
+        total = '$' + tasks.map((task) => task.price).reduce((acc, price) => acc + price);
+    }
 
     return tr({ className: 'b total-row' }, [
         cell(td, 'pa2 tl w-15', 'Total:'),
-        cell(td, 'pa2 tl w-75', total),
-        cell(td, 'w-20', fabButton(dispatch, addIcon)),
+        cell(td, 'pa2 tl w-45', total),
+        cell(td, 'w-40 tr', '(send)'),
+        fabButton(dispatch, addIcon),
       ]);
 }
 
