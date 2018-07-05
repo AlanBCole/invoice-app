@@ -7,6 +7,11 @@
     bottom: 5rem;
 }
 
+.invoice {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .total-row {
     position: fixed;
     width: 100%;

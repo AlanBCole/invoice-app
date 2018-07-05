@@ -1,25 +1,30 @@
-export const client = {
-    
-}
-
 export const initModel = {
-    whichView: 'INVOICE_SINGLE',
-    showForm: false,
-    showNavDrawer: false,
-    nextTaskId: 0,
-    taskPrice: '',
-    taskTitle: '',
-    tasks: [],
-    clients: [],
-    pastInvoices: [],
-    client: {
-        name: 'A Client',
-        email: "alantuneit@gmail.com",
-        phone: "303.443.9688",
-        streetAddress: " 2085 Glenwood Dr.",
-        city: "Boulder",
-        zipCode: "80304",
-        notes: 'additional information',
+    whichView: 'invoice',
+    invoice: {
+        clientName: 'Alan Cole',
+        clientEmail: 'alantuneit@gmail.com',
+        date: new Date(),
+        ID: 0,
+        nextTaskId: 0,
+        tasks: [],
+        taskPrice: 0,
+        taskTitle: '',
     },
-    invoiceDate: 1530320392740,
+    sentInvoices: [],
+    // showForm: false,
+    // showNavDrawer: false,
+    // nextTaskId: 0,
+    // taskPrice: 0,
+    // taskTitle: '',
+    // tasks: [],
+    // client: {
+    //     name: 'Alan Cole',
+    //     email: "alantuneit@gmail.com",
+    //     phone: "303.443.9688",
+    //     streetAddress: " 2085 Glenwood Dr.",
+    //     city: "Boulder",
+    //     zipCode: "80304",
+    //     notes: 'additional information',
+    // },
+    // invoiceDate: 1530320392740,
 }

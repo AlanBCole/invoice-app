@@ -1,6 +1,7 @@
 import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
-import { toggleForm, textInputMsg, saveTaskMsg, MSGS } from '../update';
+import { toggleView, textInputMsg, saveTaskMsg, MSGS } from '../update';
+import titleView from './title.view';
 
 
 const {
@@ -39,15 +40,16 @@ function buttonSet(dispatch) {
             {
             className: 'f3 pv2 ph3 bg-light-gray bn dim',
             type: 'button',
-            onclick: () => dispatch(toggleForm(false)),
+            onclick: () => dispatch(toggleView(MSGS.INVOICE)),
             },
             'Cancel',
         ),
     ]);
 }
 
-export function addInvoiceTaskForm(dispatch, model) {
-    const { taskTitle, taskPrice } = model;
+function taskFormView(dispatch, model) {
+    const { invoice } = model;
+    const { taskTitle, taskPrice } = invoice;
     return form(
         {
             onsubmit: e => {
@@ -56,6 +58,7 @@ export function addInvoiceTaskForm(dispatch, model) {
             }
         },
         [
+            titleView(invoice),
             formFieldSet(
                 'new task', 
                 taskTitle, 
@@ -63,10 +66,12 @@ export function addInvoiceTaskForm(dispatch, model) {
             ),
             formFieldSet(
                 'price', 
-                taskPrice, 
+                taskPrice || '', 
                 e => dispatch(textInputMsg(e.target.value, MSGS.TASK_PRICE_INPUT))
             ),
             buttonSet(dispatch),
         ]
     )
 }
+
+export default taskFormView;

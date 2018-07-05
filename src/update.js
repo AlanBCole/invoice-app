@@ -1,16 +1,18 @@
-import { addInvoiceTaskForm } from "./views/forms.view";
-
 export const MSGS = {
-    SHOW_FORM: 'show-form',
+    TOGGLE_VIEW: 'toggle-view',
     TASK_TITLE_INPUT: 'task-title',
     TASK_PRICE_INPUT: 'task-price',
     SAVE_TASK: 'save-task',
+    HOME: 'home',
+    INVOICE: 'invoice',
+    TASK_FORM: 'task-form',
+    NEW_INVOICE_FORM: 'new-invoice-form'
 }
 
-export function toggleForm(showForm) {
+export function toggleView(whichView) {
     return {
-        showForm,
-        type: MSGS.SHOW_FORM
+        whichView,
+        type: MSGS.TOGGLE_VIEW,
     }
 }
 
@@ -21,42 +23,59 @@ export function textInputMsg(msg, type) {
     }
 }
 
-export const saveTaskMsg = { type: MSGS.SAVE_TASK };
+export const saveTaskMsg = { 
+    type: MSGS.SAVE_TASK,
+    whichView: MSGS.INVOICE 
+};
 
 function update(msg, model) {
+    const { invoice } = model;
+    const { whichView } = msg;
     switch (msg.type) {
-        case MSGS.SHOW_FORM :
-            const { showForm } = msg;
-            return { ...model, showForm }
+        case MSGS.TOGGLE_VIEW :
+            return { ...model, whichView }
 
         case MSGS.TASK_TITLE_INPUT:
             const taskTitle = msg.textInput;
-            return { ...model, taskTitle }
+            return { 
+                ...model, 
+                invoice: { ...invoice, taskTitle } 
+            }
 
         case MSGS.TASK_PRICE_INPUT:
-            const taskPrice = msg.textInput;
-            return { ...model, taskPrice }
+            let taskPrice = parseFloat(msg.textInput);
+
+            return { 
+                ...model, 
+                invoice: { ...invoice, taskPrice } 
+            }
 
         case MSGS.SAVE_TASK:
             return addTask(msg, model);
 
         default:
-            return model;
+            return { ...model, whichView };
     }
 }
 
 function addTask(msg, model) {
-    const { taskTitle, taskPrice, nextTaskId } = model;
+    const { invoice } = model;
+    const { whichView } = msg;
+    const { taskTitle, taskPrice, nextTaskId } = invoice;
     const task = { id: nextTaskId, taskTitle, taskPrice };
-    const tasks = [ ... model.tasks, task ];
+    const tasks = [ ... invoice.tasks, task ];
 
     return {
         ...model,
-        tasks,
-        nextTaskId: nextTaskId + 1,
-        taskTitle: '',
-        taskPrice: '',
-        showForm: false
+        whichView,
+        invoice: {
+            ...invoice,
+            tasks,
+            nextTaskId: nextTaskId + 1,
+            taskTitle: '',
+            taskPrice: 0,
+        }
     }
 }
+
 export default update;
