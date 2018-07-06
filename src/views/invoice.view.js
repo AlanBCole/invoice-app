@@ -15,8 +15,7 @@ const {
     i,
     div,
     p,
-    h3,
-    h4,
+    span,
     button,
 } = hh(h);
 
@@ -32,7 +31,7 @@ const tableHeader = thead([
         cell(th, '', ''),
         cell(th, '', ''),
     ])
-])
+]);
 
 function taskRow(dispatch, className, task) {
     return tr({ className }, [
@@ -48,13 +47,12 @@ function taskRow(dispatch, className, task) {
             onclick: () => dispatch('trash clicked')
             })
         )
-    ])
+    ]);
 }
 
 function invoiceBody(dispatch, className, tasks) {
-    console.log('# of tasks', tasks.length)
     if (tasks.length === 0) {
-        return div({ className: 'mv-2 black-50' }, 'no tasks in this invoice')
+        return div({ className: 'mv-2 black-50' }, 'no tasks in this invoice');
     } else {
         const taskRows = tasks.map((task) => taskRow(dispatch, '', task));
         // const rowsWithTotal = [ ...taskRows, totalRow(tasks)];
@@ -68,9 +66,14 @@ function invoiceBody(dispatch, className, tasks) {
 
 function fabButton(dispatch, icon) {
     return button({ 
-        className: 'mdc-fab material-icons',
-        onclick: () => dispatch(toggleView(MSGS.TASK_FORM)),
-    }, i({ className: 'mdc-fab__icon material-icons' }, icon));
+            className: 'mdc-fab material-icons add-task-fab',
+            onclick: () => dispatch(toggleView(MSGS.TASK_FORM)),
+        }, 
+        i({ className: 'mdc-fab__icon material-icons' }, icon));
+}
+
+function totalDisplay(total) {
+    return span({}, total);
 }
 
 function totalRow(dispatch, tasks, addIcon) {
@@ -82,16 +85,19 @@ function totalRow(dispatch, tasks, addIcon) {
         total = tasks.map((task) => task.taskPrice).reduce((acc, price) => acc + price);
     }
 
-    return tr({ className: 'b total-row' }, [
-        cell(td, 'pt2 pl2 pb2 tr w-15', 'Total: $'),
-        cell(td, 'pr2 pt2 pb2 tl w-45', total),
-        cell(td, 'w-40 tr', '(send)'),
-        fabButton(dispatch, addIcon),
-      ]);
+    return div({ className: 'total-row' }, [
+        div({ className: 'total-row-left' }, [
+            p({}, 'Total: $' + total),
+        ]),
+        div({ className: 'total-row-right' }, [
+            button({ className: "mdc-button send-button" }, 'Send'),
+            fabButton(dispatch, addIcon)
+        ])
+    ]);
 }
 
 function invoiceView(dispatch, model) {
-    const { showForm, whichView, invoice } = model;
+    const { invoice } = model;
     const { tasks } = invoice;
         return div({ className: 'invoice' }, [
             titleView(invoice),

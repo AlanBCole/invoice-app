@@ -54,7 +54,8 @@ function update(msg, model) {
             return addTask(msg, model);
 
         default:
-            return { ...model, whichView };
+            console.log(msg);
+            return model;
     }
 }
 

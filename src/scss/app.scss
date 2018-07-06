@@ -1,6 +1,12 @@
 @import "@material/fab/mdc-fab";
+@import "@material/button/mdc-button";
 
-.mdc-fab {
+.send-button {
+    color: red;
+    @include mdc-button-ink-color(red);
+}
+
+.add-task-fab {
     background-color: red;
     position: fixed;
     right: 1rem;
@@ -18,5 +24,18 @@
     bottom: 0;
     right: 0;
     background-color: lightyellow;
-    padding: 1rem;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.total-row-left {
+    width: 75%;
+    padding-left: .5rem;
+    font-weight: bold;
+}
+
+.total-row-right {
+    text-align: right;
+    width: 25%;
 }
