@@ -39,7 +39,7 @@ function taskRow(dispatch, className, task) {
         cell(td, 'pa2 tr w-10 f5', '$' + task.taskPrice),
         cell(td, 'pa2', i({ 
             className: 'fas fa-info-circle f6',
-            onclick: () => dispatch('edit clicked')
+            onclick: () => dispatch(toggleView(MSGS.TASK_FORM, task.ID))
             })
         ),
         cell(td, 'pa2', i({ 
