@@ -10,7 +10,6 @@ export const MSGS = {
 }
 
 export function toggleView(whichView, editID) {
-    console.log(whichView, editID);
         
     return {
         type: MSGS.TOGGLE_VIEW,
@@ -26,10 +25,14 @@ export function textInputMsg(msg, type) {
     };
 }
 
-export const saveTaskMsg = { 
-    type: MSGS.SAVE_TASK,
-    whichView: MSGS.INVOICE 
-};
+export function saveTask(whichView, editID)  { 
+    return {
+        type: MSGS.SAVE_TASK,
+        whichView,
+        editID,
+    };
+}
+
 
 function update(msg, model) {
     const { invoice } = model;
@@ -38,7 +41,6 @@ function update(msg, model) {
     switch (msg.type) {
         
         case MSGS.TOGGLE_VIEW :
-            console.log(msg);
             if (msg.editID !== undefined) {
                 const task = findTask(msg.editID, model);
                 return {
@@ -93,12 +95,12 @@ function findTask(editID, model) {
 
 function editTask(msg, model) {
     const { invoice } = model;
-    const {whichView } = msg;
-    const { tasks } = invoice;
+    const { whichView } = msg;
+    const { tasks, taskTitle, taskPrice } = invoice;
     
     const updatedTasks = tasks.map((task) => {
         if (task.ID === msg.editID) {
-            return task;
+            return { ...task, taskTitle, taskPrice };
         }
         return task;
     });

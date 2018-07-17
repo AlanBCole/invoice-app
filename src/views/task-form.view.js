@@ -1,6 +1,6 @@
 import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
-import { toggleView, textInputMsg, saveTaskMsg, MSGS } from '../update';
+import { toggleView, textInputMsg, saveTask, MSGS } from '../update';
 import titleView from './title.view';
 
 
@@ -54,7 +54,7 @@ function taskFormView(dispatch, model) {
         {
             onsubmit: e => {
                 e.preventDefault();
-                dispatch(saveTaskMsg);
+                dispatch(saveTask(MSGS.INVOICE, invoice.editID));
             }
         },
         [
