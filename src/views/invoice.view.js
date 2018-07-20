@@ -2,6 +2,7 @@ import hh from 'hyperscript-helpers';
 import { h } from 'virtual-dom';
 import { toggleView, MSGS } from '../update';
 import titleView from './title.view';
+import { endpoints, sendInvoice } from '../endpoints';
 
 
 const { 
@@ -64,6 +65,15 @@ function invoiceBody(dispatch, className, tasks) {
     }
 }
 
+function sendButton(endpoint, invoice) {
+    return button({
+            className: "mdc-button send-button",
+            onclick: () => sendInvoice(endpoint, invoice)
+        },
+        'Send'
+    );
+}
+
 function fabButton(dispatch, icon) {
     return button({ 
             className: 'mdc-fab material-icons add-task-fab',
@@ -76,7 +86,8 @@ function totalDisplay(total) {
     return span({}, total);
 }
 
-function totalRow(dispatch, tasks, addIcon) {
+function totalRow(dispatch, invoice, addIcon) {
+    const { tasks } = invoice;
     let total = 0;
     
     if (tasks.length === 0) {
@@ -90,7 +101,7 @@ function totalRow(dispatch, tasks, addIcon) {
             p({}, 'Total: $' + total),
         ]),
         div({ className: 'total-row-right' }, [
-            button({ className: "mdc-button send-button" }, 'Send'),
+            sendButton(endpoints.sendInvoice, invoice),
             fabButton(dispatch, addIcon)
         ])
     ]);
@@ -103,7 +114,7 @@ function invoiceView(dispatch, model) {
             titleView(invoice),
             invoiceBody(dispatch, 'w-100', tasks),
             // pre(JSON.stringify(model, null, 2)),
-            totalRow(dispatch, tasks, 'add'),
+            totalRow(dispatch, invoice, 'add'),
         ]);     
         
 }

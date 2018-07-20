@@ -55,7 +55,7 @@ function update(msg, model) {
                 };
             } else {
                 return { ...model, whichView };    
-            }
+        }
             
 
         case MSGS.TASK_TITLE_INPUT:
